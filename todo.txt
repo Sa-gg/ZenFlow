@@ -1,0 +1,8 @@
+Must:
+Fix overflow issue in smaller screen size
+Add timer sound alert
+Add back confirmation
+
+
+Feature:
+Add simple mode timer ui
