@@ -43,6 +43,7 @@ app.*.map.json
 /android/app/release
 
 # Generated doc files (keep scripts, ignore outputs)
+docs
 docs/*.docx
 docs/*.pdf
 
