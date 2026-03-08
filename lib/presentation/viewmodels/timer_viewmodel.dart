@@ -96,14 +96,23 @@ class TimerViewModel extends ChangeNotifier {
   void start() {
     print('TimerViewModel.start() called');
     if (_isRunning) return;
+
+    // If remaining time is zero (timer already completed), reset before starting
+    if (_remainingSeconds <= 0) {
+      _remainingSeconds = _getTotalSeconds();
+    }
+
     _isRunning = true;
     _updateTimerNotification(); // Show initial notification
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_remainingSeconds > 0) {
+      if (_remainingSeconds > 1) {
         _remainingSeconds--;
         _updateTimerNotification(); // Update notification every second
         notifyListeners();
       } else {
+        // Last second: set to 0 and complete
+        _remainingSeconds = 0;
+        notifyListeners();
         _onTimerComplete();
       }
     });

@@ -1,170 +1,108 @@
-# ZenFlow - Pomodoro Timer App
+# ZenFlow — Pomodoro Timer
 
-A beautiful and functional Pomodoro timer app built with Flutter, featuring Clean Architecture, MVVM pattern, and Hive database for local storage.
+A clean, distraction-free Pomodoro timer built with **Flutter** using Clean Architecture and MVVM.
 
 ## Features
 
-- ⏱️ **Pomodoro Timer** - Focus sessions (25 min), Short breaks (5 min), and Long breaks (15 min)
-- 📝 **Task Management** - Create, complete, and track tasks with pomodoro counts
-- 🔄 **Cycle Tracking** - Automatic cycle progression with visual progress indicators
-- 💾 **Persistent Storage** - All data saved locally using Hive database
-- 🎨 **Beautiful Dark Theme** - Modern UI inspired by the Flow Zone design
-- 📊 **Statistics** - Track completed cycles and total focus time
+- **Pomodoro Timer** — Focus (25 min), Short Break (5 min), Long Break (15 min)
+- **Task Management** — Create tasks and track pomodoros per task
+- **Cycle Tracking** — Visual progress dots with automatic long-break after 4 focus sessions
+- **Auto-Switch** — Optionally auto-transition between focus and break modes
+- **Customizable Durations** — Adjust all timer lengths and cycle count from settings
+- **Audio & Notification Alerts** — System sound + notification on timer completion
+- **Offline-First** — All data persisted locally with Hive (no account required)
+- **Dark Theme** — Modern dark UI designed to minimise eye strain
 
-## Architecture
+## Screenshots
 
-This project follows **Clean Architecture** principles with three distinct layers:
-
-### 1. Domain Layer (`lib/domain/`)
-- **Entities**: Core business models (Task, TimerSession, AppSettings)
-- **Repositories**: Abstract interfaces for data operations
-- Pure Dart with no dependencies on Flutter or external packages
-
-### 2. Data Layer (`lib/data/`)
-- **Models**: Hive-annotated models with adapters
-- **Repository Implementations**: Concrete implementations using Hive
-- Handles all database operations and data persistence
-
-### 3. Presentation Layer (`lib/presentation/`)
-- **ViewModels**: Business logic using ChangeNotifier (MVVM pattern)
-- **Screens**: Main app screens
-- **Widgets**: Reusable UI components
-- Uses Provider for state management
-
-### Core (`lib/core/`)
-- **Constants**: App-wide constants
-- **Theme**: App colors and theme configuration
-
-## Project Structure
-
-```
-lib/
-├── core/
-│   ├── constants/
-│   │   └── app_constants.dart
-│   └── theme/
-│       ├── app_colors.dart
-│       └── app_theme.dart
-├── data/
-│   ├── models/
-│   │   ├── task_model.dart
-│   │   ├── timer_session_model.dart
-│   │   └── settings_model.dart
-│   └── repositories/
-│       ├── task_repository_impl.dart
-│       ├── session_repository_impl.dart
-│       └── settings_repository_impl.dart
-├── domain/
-│   ├── entities/
-│   │   ├── task.dart
-│   │   ├── timer_session.dart
-│   │   └── app_settings.dart
-│   └── repositories/
-│       ├── task_repository.dart
-│       ├── session_repository.dart
-│       └── settings_repository.dart
-├── presentation/
-│   ├── screens/
-│   │   └── home_screen.dart
-│   ├── viewmodels/
-│   │   ├── timer_viewmodel.dart
-│   │   ├── task_viewmodel.dart
-│   │   └── settings_viewmodel.dart
-│   └── widgets/
-│       ├── timer_display.dart
-│       ├── timer_controls.dart
-│       ├── timer_type_selector.dart
-│       ├── cycle_progress.dart
-│       └── task_list_widget.dart
-└── main.dart
-```
-
-## Technologies Used
-
-- **Flutter** - UI framework
-- **Hive** - Lightweight and fast NoSQL database
-- **Provider** - State management
-- **Equatable** - Value equality for entities
-- **Google Fonts** - Custom typography (Poppins)
+<!-- Add screenshots here -->
 
 ## Getting Started
 
 ### Prerequisites
 
-- Flutter SDK (>=3.5.3)
-- Dart SDK
-- Android Studio / VS Code with Flutter extensions
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) (>= 3.5.3)
+- Android Studio / VS Code with the Flutter extension
 
 ### Installation
 
-1. Clone the repository:
 ```bash
-git clone <repository-url>
+# Clone the repository
+git clone https://github.com/<your-username>/zenflow.git
 cd zenflow
-```
 
-2. Install dependencies:
-```bash
+# Install dependencies
 flutter pub get
-```
 
-3. Generate Hive adapters:
-```bash
+# Generate Hive type adapters (only needed after modifying models)
 flutter pub run build_runner build --delete-conflicting-outputs
-```
 
-4. Run the app:
-```bash
+# Run on a connected device or emulator
 flutter run
 ```
 
-## How to Use
+### Running Tests
 
-1. **Select Timer Type**: Choose between Focus, Short Break, or Long Break
-2. **Start Timer**: Press the START button to begin your session
-3. **Add Tasks**: Enter tasks you're working on in the Tasks section
-4. **Track Progress**: Monitor your cycle progress and completed pomodoros
-5. **Complete Cycles**: After 4 focus sessions, you'll automatically get a long break
+```bash
+flutter test
+```
 
-## Design Inspiration
+## Project Structure
 
-This app is inspired by the Flow Zone Pomodoro Timer design available at [https://fzt.vercel.app/](https://fzt.vercel.app/)
+```
+lib/
+├── core/               # Constants, theme, services (audio, notifications)
+├── data/               # Hive models, repository implementations
+├── domain/             # Entities, abstract repository interfaces
+├── presentation/
+│   ├── screens/        # HomeScreen
+│   ├── viewmodels/     # TimerViewModel, TaskViewModel, SettingsViewModel
+│   └── widgets/        # Reusable UI components
+└── main.dart
 
-## Features Details
+docs/                   # Documentation scripts and generated files
+test/                   # Widget and unit tests
+```
 
-### Timer Modes
-- **Focus**: 25-minute work sessions
-- **Short Break**: 5-minute breaks between focus sessions
-- **Long Break**: 15-minute break after 4 completed cycles
+## Architecture
 
-### Task Management
-- Create unlimited tasks
-- Track pomodoros completed per task
-- Mark tasks as complete
-- Delete tasks when done
+| Layer | Responsibility |
+|-------|---------------|
+| **Domain** | Entities (`Task`, `TimerSession`, `AppSettings`), abstract repositories |
+| **Data** | Hive-annotated models + repository implementations |
+| **Presentation** | `ChangeNotifier` ViewModels + Flutter widgets (MVVM) |
+| **Core** | Theme, constants, audio/notification services |
 
-### Automatic Cycling
-- App automatically transitions between Focus and Break modes
-- Long break triggered after 4 focus sessions
-- Visual cycle progress indicators
+State management uses **Provider** with `ChangeNotifier` ViewModels.
 
-## Future Enhancements
+## Tech Stack
 
-- [ ] Settings screen for customizable timer durations
-- [ ] Sound notifications when timer completes
-- [ ] Push notifications
-- [ ] Statistics dashboard
-- [ ] Data export functionality
-- [ ] Multiple themes
+- **Flutter** — UI framework
+- **Hive** — Lightweight NoSQL local database
+- **Provider** — State management
+- **Equatable** — Value equality for entities
+- **Google Fonts** — Poppins typography
+- **flutter_local_notifications** — Timer alerts
 
-## License
+## Configuration
 
-This project is open source and available under the MIT License.
+Default timer values (editable in-app):
+
+| Setting | Default |
+|---------|---------|
+| Focus Duration | 25 minutes |
+| Short Break | 5 minutes |
+| Long Break | 15 minutes |
+| Cycles Before Long Break | 4 |
 
 ## Contributing
 
-Contributions, issues, and feature requests are welcome!
+1. Fork the repo
+2. Create a feature branch (`git checkout -b feature/my-feature`)
+3. Commit your changes (`git commit -m 'Add my feature'`)
+4. Push to the branch (`git push origin feature/my-feature`)
+5. Open a Pull Request
 
-## Author
+## License
 
-Built with ❤️ using Flutter and Clean Architecture principles.
+This project is open source and available under the [MIT License](LICENSE).

@@ -128,13 +128,9 @@ class _CycleProgressState extends State<CycleProgress>
                       dot = _buildInactiveDot();
                     }
 
-                    return GestureDetector(
-                      onTap: () => viewModel.setCurrentCycle(index + 1),
-                      child: SizedBox(
-                        width: 40, // Fixed width for each dot slot
-                        child:
-                            Center(child: dot), // Center dot within fixed space
-                      ),
+                    return SizedBox(
+                      width: 40, // Fixed width for each dot slot
+                      child: Center(child: dot), // Center dot within fixed space
                     );
                   }),
                 ),
