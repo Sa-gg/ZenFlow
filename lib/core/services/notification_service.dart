@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../domain/entities/timer_session.dart';
 
@@ -18,15 +19,16 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
 
   bool _isInitialized = false;
-  
+
   // Use a stream controller to broadcast notification actions
   final _actionController = StreamController<NotificationAction>.broadcast();
   Stream<NotificationAction> get actionStream => _actionController.stream;
 
   Future<void> initialize() async {
-    if (_isInitialized) return;
+    if (kIsWeb || _isInitialized) return;
 
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -43,7 +45,8 @@ class NotificationService {
       onDidReceiveNotificationResponse: (NotificationResponse details) {
         _handleNotificationResponse(details);
       },
-      onDidReceiveBackgroundNotificationResponse: _handleNotificationResponseBackground,
+      onDidReceiveBackgroundNotificationResponse:
+          _handleNotificationResponseBackground,
     );
 
     // Request notification permission on Android 13+ (API 33+)
@@ -57,25 +60,20 @@ class NotificationService {
   }
 
   void _handleNotificationResponse(NotificationResponse details) {
-    print('Notification response received: ${details.actionId}');
     if (details.actionId == 'pause') {
-      print('Pause action triggered');
       _actionController.add(NotificationAction.pause);
     } else if (details.actionId == 'resume') {
-      print('Resume action triggered');
       _actionController.add(NotificationAction.resume);
     } else if (details.actionId == 'reset') {
-      print('Reset action triggered');
       _actionController.add(NotificationAction.reset);
     } else {
-      print('Default tap - scrolling to top');
       _actionController.add(NotificationAction.tap);
     }
   }
 
   @pragma('vm:entry-point')
-  static void _handleNotificationResponseBackground(NotificationResponse details) {
-    print('Background notification response: ${details.actionId}');
+  static void _handleNotificationResponseBackground(
+      NotificationResponse details) {
     final instance = NotificationService();
     if (details.actionId == 'pause') {
       instance._actionController.add(NotificationAction.pause);
@@ -95,24 +93,27 @@ class NotificationService {
     required String timeRemaining,
     required bool isRunning,
   }) async {
+    if (kIsWeb) return;
     await initialize();
 
     // NOTE: Action buttons removed (pause/reset) because they were unreliable
     // when the app is backgrounded. The notification will now show only the
     // timer text. If native action handling is added later, re-introduce
     // pending intents on the Android side.
-    final androidDetails = AndroidNotificationDetails(
+    const androidDetails = AndroidNotificationDetails(
       'zenflow_timer',
       'Timer',
       channelDescription: 'Pomodoro timer notifications',
-      importance: Importance.low, // Low importance = no heads-up, stays in shade only
+      importance:
+          Importance.low, // Low importance = no heads-up, stays in shade only
       priority: Priority.low, // Low priority = no popup
       ongoing: true, // Can't be dismissed, persistent
       autoCancel: false,
       onlyAlertOnce: true, // No sound/vibration on updates
       showWhen: false,
       icon: '@mipmap/ic_launcher',
-      category: AndroidNotificationCategory.progress, // Changed from alarm to progress
+      category: AndroidNotificationCategory
+          .progress, // Changed from alarm to progress
       silent: true, // No sound
     );
 
@@ -122,7 +123,7 @@ class NotificationService {
       presentSound: false,
     );
 
-    final notificationDetails = NotificationDetails(
+    const notificationDetails = NotificationDetails(
       android: androidDetails,
       iOS: iosDetails,
     );
@@ -166,6 +167,7 @@ class NotificationService {
     required String title,
     required String body,
   }) async {
+    if (kIsWeb) return;
     await initialize();
 
     const androidDetails = AndroidNotificationDetails(
@@ -201,7 +203,7 @@ class NotificationService {
     // Use unique ID based on timestamp to prevent re-showing after dismiss
     // This ensures each completion notification is truly independent
     final uniqueId = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    
+
     await _notifications.show(
       uniqueId, // Unique ID for each completion notification
       title,
@@ -211,10 +213,12 @@ class NotificationService {
   }
 
   Future<void> cancelTimerNotification() async {
+    if (kIsWeb) return;
     await _notifications.cancel(0);
   }
 
   Future<void> cancelAll() async {
+    if (kIsWeb) return;
     await _notifications.cancelAll();
   }
 

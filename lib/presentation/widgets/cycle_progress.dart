@@ -54,7 +54,7 @@ class _CycleProgressState extends State<CycleProgress>
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 blurRadius: 10,
                 spreadRadius: 2,
               ),
@@ -83,7 +83,7 @@ class _CycleProgressState extends State<CycleProgress>
                 ],
               ),
               const SizedBox(height: 16),
-              Text(
+              const Text(
                 'Cycle Progress',
                 style: TextStyle(
                   fontSize: 14,
@@ -130,7 +130,8 @@ class _CycleProgressState extends State<CycleProgress>
 
                     return SizedBox(
                       width: 40, // Fixed width for each dot slot
-                      child: Center(child: dot), // Center dot within fixed space
+                      child:
+                          Center(child: dot), // Center dot within fixed space
                     );
                   }),
                 ),
@@ -157,7 +158,7 @@ class _CycleProgressState extends State<CycleProgress>
         const SizedBox(height: 8),
         Text(
           value,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
@@ -166,36 +167,12 @@ class _CycleProgressState extends State<CycleProgress>
         const SizedBox(height: 4),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12,
             color: AppColors.textSecondary,
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildProgressDot(bool isActive, bool isCurrent) {
-    return Container(
-      width: 20,
-      height: 20,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: isActive ? AppColors.progressActive : AppColors.progressInactive,
-        border: Border.all(
-          color: isActive ? AppColors.primaryRed : AppColors.textTertiary,
-          width: isCurrent ? 3 : 2,
-        ),
-      ),
-      child: isCurrent
-          ? Container(
-              width: 8,
-              height: 8,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle, color: AppColors.primaryRed),
-            )
-          : null,
     );
   }
 
@@ -208,7 +185,7 @@ class _CycleProgressState extends State<CycleProgress>
         color: AppColors.success,
         border: Border.all(color: AppColors.success, width: 2),
       ),
-      child: Icon(Icons.check, size: 14, color: Colors.white),
+      child: const Icon(Icons.check, size: 14, color: Colors.white),
     );
   }
 
@@ -225,29 +202,11 @@ class _CycleProgressState extends State<CycleProgress>
       child: Container(
         width: 16,
         height: 16,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: AppColors.primaryRed,
         ),
       ),
-    );
-  }
-
-  Widget _buildCurrentDot() {
-    return Container(
-      width: 22,
-      height: 22,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppColors.progressActive,
-        border: Border.all(color: AppColors.primaryRed, width: 3),
-      ),
-      child: Container(
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle, color: AppColors.primaryRed)),
     );
   }
 

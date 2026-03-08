@@ -35,7 +35,7 @@ class TimerCompleteDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(24),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withValues(alpha: 0.3),
                   blurRadius: 20,
                   spreadRadius: 5,
                 ),
@@ -49,8 +49,8 @@ class TimerCompleteDialog extends StatelessWidget {
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: isBreakComplete
-                        ? AppColors.progressActive.withOpacity(0.15)
-                        : AppColors.primaryRed.withOpacity(0.15),
+                        ? AppColors.progressActive.withValues(alpha: 0.15)
+                        : AppColors.primaryRed.withValues(alpha: 0.15),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -69,7 +69,7 @@ class TimerCompleteDialog extends StatelessWidget {
                 Text(
                   _getTitle(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -81,7 +81,7 @@ class TimerCompleteDialog extends StatelessWidget {
                 Text(
                   _getMessage(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 16,
                     height: 1.5,
@@ -94,13 +94,13 @@ class TimerCompleteDialog extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: AppColors.darkGrey.withOpacity(0.3),
+                    color: AppColors.darkGrey.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     'Tap anywhere to continue',
                     style: TextStyle(
-                      color: AppColors.textSecondary.withOpacity(0.7),
+                      color: AppColors.textSecondary.withValues(alpha: 0.7),
                       fontSize: 14,
                     ),
                   ),

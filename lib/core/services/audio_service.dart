@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
 
 class AudioService {
@@ -6,24 +7,18 @@ class AudioService {
   AudioService._internal();
 
   Future<void> playCompletionSound() async {
+    if (kIsWeb) return;
     try {
-      // Play system notification sound
       await SystemSound.play(SystemSoundType.alert);
-    } catch (e) {
-      print('Audio playback error: $e');
-    }
+    } catch (_) {}
   }
 
   Future<void> playTickSound() async {
+    if (kIsWeb) return;
     try {
-      // Play system click sound
       await SystemSound.play(SystemSoundType.click);
-    } catch (e) {
-      print('Audio playback error: $e');
-    }
+    } catch (_) {}
   }
 
-  void dispose() {
-    // Nothing to dispose
-  }
+  void dispose() {}
 }

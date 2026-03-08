@@ -36,14 +36,14 @@ class _TaskListWidgetState extends State<TaskListWidget> {
           },
           child: AlertDialog(
             backgroundColor: AppColors.cardBackground,
-            title: Text('Edit Task',
+            title: const Text('Edit Task',
                 style: TextStyle(color: AppColors.textPrimary)),
             content: TextField(
               controller: editController,
               focusNode: editFocusNode,
               autofocus: true,
-              style: TextStyle(color: AppColors.textPrimary),
-              decoration: InputDecoration(
+              style: const TextStyle(color: AppColors.textPrimary),
+              decoration: const InputDecoration(
                 hintText: 'Task title',
                 hintStyle: TextStyle(color: AppColors.textTertiary),
               ),
@@ -51,7 +51,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text('Cancel',
+                child: const Text('Cancel',
                     style: TextStyle(color: AppColors.textTertiary)),
               ),
               ElevatedButton(
@@ -59,13 +59,14 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                     backgroundColor: AppColors.primaryRed),
                 onPressed: () async {
                   final newTitle = editController.text.trim();
+                  final navigator = Navigator.of(context);
                   if (newTitle.isNotEmpty) {
                     final updated = task.copyWith(title: newTitle);
                     await viewModel.updateTask(updated);
                   }
-                  Navigator.of(context).pop();
+                  navigator.pop();
                 },
-                child: Text('Save'),
+                child: const Text('Save'),
               ),
             ],
           ),
@@ -94,7 +95,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 10,
                   spreadRadius: 2,
                 ),
@@ -103,7 +104,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Tasks',
                   style: TextStyle(
                     fontSize: 20,
@@ -117,10 +118,10 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                 TextField(
                   controller: _taskController,
                   focusNode: _taskFocusNode,
-                  style: TextStyle(color: AppColors.textPrimary),
+                  style: const TextStyle(color: AppColors.textPrimary),
                   decoration: InputDecoration(
                     hintText: 'What are you working on?',
-                    hintStyle: TextStyle(color: AppColors.textTertiary),
+                    hintStyle: const TextStyle(color: AppColors.textTertiary),
                     filled: true,
                     fillColor: AppColors.darkGrey,
                     border: OutlineInputBorder(
@@ -160,11 +161,11 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: Row(
+                    child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.add_rounded, size: 20),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8),
                         Text(
                           'Add Task',
                           style: TextStyle(
@@ -180,9 +181,9 @@ class _TaskListWidgetState extends State<TaskListWidget> {
 
                 // Task List
                 if (allTasks.isEmpty)
-                  Center(
+                  const Center(
                     child: Padding(
-                      padding: const EdgeInsets.all(20),
+                      padding: EdgeInsets.all(20),
                       child: Text(
                         'No tasks yet. Add one to get started!',
                         style: TextStyle(
@@ -205,8 +206,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                               color: AppColors.darkGrey,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                  color:
-                                      AppColors.textTertiary.withOpacity(0.06)),
+                                  color: AppColors.textTertiary
+                                      .withValues(alpha: 0.06)),
                             ),
                             child: Row(
                               children: [
@@ -251,18 +252,18 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                         horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
                                       color: AppColors.primaryRed
-                                          .withOpacity(0.12),
+                                          .withValues(alpha: 0.12),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                             Icons.local_fire_department_rounded,
                                             size: 14,
                                             color: AppColors.primaryRed),
                                         const SizedBox(width: 6),
                                         Text('${task.pomodorosCompleted}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 color: AppColors.primaryRed,
                                                 fontWeight: FontWeight.bold)),
                                       ],
@@ -282,7 +283,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                         padding: const EdgeInsets.all(8),
                                         onPressed: () => _showEditDialog(
                                             context, viewModel, task),
-                                        icon: Icon(Icons.edit_outlined,
+                                        icon: const Icon(Icons.edit_outlined,
                                             color: AppColors.textSecondary,
                                             size: 18),
                                       ),
@@ -292,7 +293,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                         padding: const EdgeInsets.all(8),
                                         onPressed: () =>
                                             viewModel.deleteTask(task.id),
-                                        icon: Icon(Icons.delete_outline,
+                                        icon: const Icon(Icons.delete_outline,
                                             color: AppColors.error, size: 18),
                                       ),
                                     ],
@@ -308,7 +309,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                         alignment: Alignment.centerRight,
                         child: Text(
                             '${viewModel.completedTasks.length}/${viewModel.tasks.length} completed',
-                            style: TextStyle(color: AppColors.textTertiary)),
+                            style:
+                                const TextStyle(color: AppColors.textTertiary)),
                       ),
                     ],
                   ),

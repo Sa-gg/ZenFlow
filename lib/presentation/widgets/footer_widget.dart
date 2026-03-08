@@ -6,12 +6,12 @@ class FooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       children: [
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text('© 2025 ZenFlow. All rights reserved.',
             style: TextStyle(color: AppColors.textSecondary)),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         Text('Developed by Sag.',
             style: TextStyle(
                 color: AppColors.primaryRed, fontWeight: FontWeight.w600)),

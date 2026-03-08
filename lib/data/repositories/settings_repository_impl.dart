@@ -14,7 +14,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
     final model = _settingsBox.get(_settingsKey);
     if (model == null) {
       // Return default settings
-      final defaultSettings = AppSettings();
+      const defaultSettings = AppSettings();
       await saveSettings(defaultSettings);
       return defaultSettings;
     }

@@ -123,13 +123,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         gradient: LinearGradient(
                           colors: [
                             AppColors.primaryRed,
-                            AppColors.primaryRed.withOpacity(0.8),
+                            AppColors.primaryRed.withValues(alpha: 0.8),
                           ],
                         ),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.primaryRed.withOpacity(0.3),
+                            color: AppColors.primaryRed.withValues(alpha: 0.3),
                             blurRadius: 8,
                             offset: const Offset(0, 2),
                           ),
@@ -143,11 +143,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const SizedBox(width: 12),
                     // Title
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
+                        Text(
                           'ZenFlow',
                           style: TextStyle(
                             fontSize: 24,

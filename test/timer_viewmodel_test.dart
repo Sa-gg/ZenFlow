@@ -1,4 +1,5 @@
-import 'dart:async';
+import 'package:fake_async/fake_async.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zenflow/domain/entities/timer_session.dart';
 import 'package:zenflow/domain/entities/app_settings.dart';
@@ -17,8 +18,7 @@ class FakeSessionRepository implements SessionRepository {
   Future<List<TimerSession>> getSessions() async => List.of(_sessions);
 
   @override
-  Future<void> addSession(TimerSession session) async =>
-      _sessions.add(session);
+  Future<void> addSession(TimerSession session) async => _sessions.add(session);
 
   @override
   Future<void> updateSession(TimerSession session) async {
@@ -28,10 +28,12 @@ class FakeSessionRepository implements SessionRepository {
 
   @override
   Future<List<TimerSession>> getSessionsByDate(DateTime date) async {
-    return _sessions.where((s) =>
-        s.startTime.year == date.year &&
-        s.startTime.month == date.month &&
-        s.startTime.day == date.day).toList();
+    return _sessions
+        .where((s) =>
+            s.startTime.year == date.year &&
+            s.startTime.month == date.month &&
+            s.startTime.day == date.day)
+        .toList();
   }
 
   @override
@@ -56,8 +58,7 @@ class FakeSettingsRepository implements SettingsRepository {
   Future<AppSettings> getSettings() async => _settings;
 
   @override
-  Future<void> saveSettings(AppSettings settings) async =>
-      _settings = settings;
+  Future<void> saveSettings(AppSettings settings) async => _settings = settings;
 }
 
 // ---------------------------------------------------------------------------
@@ -75,6 +76,22 @@ class FakeSettingsRepository implements SettingsRepository {
 /// `fakeAsync` from flutter_test.
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  // Mock the flutter_local_notifications platform channel so
+  // NotificationService doesn't crash in unit tests.
+  setUpAll(() {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+      const MethodChannel('dexterous.com/flutter/local_notifications'),
+      (MethodCall methodCall) async {
+        if (methodCall.method == 'initialize') return true;
+        if (methodCall.method == 'requestNotificationsPermission') return true;
+        return null; // no-op for show, cancel, cancelAll, etc.
+      },
+    );
+  });
+
   late FakeSessionRepository sessionRepo;
   late FakeSettingsRepository settingsRepo;
   late TimerViewModel vm;
@@ -390,7 +407,8 @@ void main() {
 
     tearDown(() => autoVm.dispose());
 
-    test('completing focus session increments cycle and switches to short break',
+    test(
+        'completing focus session increments cycle and switches to short break',
         () {
       fakeAsync((async) {
         autoVm.onTimerComplete = (_) {};

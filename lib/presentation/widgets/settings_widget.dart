@@ -59,14 +59,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: AppColors.primaryRed.withOpacity(0.15),
+                              color:
+                                  AppColors.primaryRed.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Icon(Icons.settings,
+                            child: const Icon(Icons.settings,
                                 color: AppColors.primaryRed, size: 24),
                           ),
                           const SizedBox(width: 12),
-                          Text('Settings',
+                          const Text('Settings',
                               style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -81,7 +82,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             color: AppColors.darkGrey,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: Icon(Icons.close_rounded,
+                          child: const Icon(Icons.close_rounded,
                               color: AppColors.textSecondary, size: 20),
                         ),
                       ),
@@ -89,7 +90,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   ),
                   const SizedBox(height: 24),
 
-                  Divider(color: AppColors.darkGrey, thickness: 1),
+                  const Divider(color: AppColors.darkGrey, thickness: 1),
                   const SizedBox(height: 24),
 
                   // Time Settings Section
@@ -135,7 +136,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.darkGrey.withOpacity(0.5),
+                      color: AppColors.darkGrey.withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: AppColors.darkGrey,
@@ -144,7 +145,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                     ),
                     child: Row(
                       children: [
-                        Expanded(
+                        const Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -153,7 +154,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                       color: AppColors.textPrimary,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600)),
-                              const SizedBox(height: 6),
+                              SizedBox(height: 6),
                               Text(
                                   'Automatically switch between focus and break modes when timer completes',
                                   style: TextStyle(
@@ -165,9 +166,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         const SizedBox(width: 12),
                         Switch(
                           value: s.autoSwitch,
-                          activeColor: AppColors.progressActive,
+                          activeThumbColor: AppColors.progressActive,
                           activeTrackColor:
-                              AppColors.progressActive.withOpacity(0.5),
+                              AppColors.progressActive.withValues(alpha: 0.5),
                           onChanged: (v) async {
                             await settingsVm.toggleAutoSwitch();
                           },
@@ -182,7 +183,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.darkGrey.withOpacity(0.3),
+                      color: AppColors.darkGrey.withValues(alpha: 0.3),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: AppColors.darkGrey,
@@ -195,11 +196,11 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
+                            const Row(
                               children: [
                                 Icon(Icons.local_fire_department_rounded,
                                     color: AppColors.primaryRed, size: 20),
-                                const SizedBox(width: 8),
+                                SizedBox(width: 8),
                                 Text('Focus Sessions',
                                     style: TextStyle(
                                         color: AppColors.textPrimary,
@@ -256,7 +257,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8.0),
                                     child: index < timerVm.completedCycles
-                                        ? Icon(Icons.check_circle,
+                                        ? const Icon(Icons.check_circle,
                                             color: AppColors.progressActive,
                                             size: 24)
                                         : Container(
@@ -312,9 +313,9 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                             borderRadius: BorderRadius.circular(12)),
                         elevation: 0,
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           Icon(Icons.check_rounded, size: 20),
                           SizedBox(width: 8),
                           Text('Apply',
@@ -350,7 +351,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
             const SizedBox(width: 6),
             Text(
               label,
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppColors.textPrimary,
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
@@ -363,25 +364,25 @@ class _SettingsWidgetState extends State<SettingsWidget> {
           controller: controller,
           keyboardType: TextInputType.number,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColors.textPrimary,
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: TextStyle(color: AppColors.textTertiary),
+            hintStyle: const TextStyle(color: AppColors.textTertiary),
             filled: true,
-            fillColor: AppColors.darkGrey.withOpacity(0.3),
+            fillColor: AppColors.darkGrey.withValues(alpha: 0.3),
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: AppColors.darkGrey),
+              borderSide: const BorderSide(color: AppColors.darkGrey),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: AppColors.darkGrey),
+              borderSide: const BorderSide(color: AppColors.darkGrey),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
@@ -393,7 +394,7 @@ class _SettingsWidgetState extends State<SettingsWidget> {
         Center(
           child: Text(
             '$currentValue minutes',
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.textTertiary,
               fontSize: 12,
             ),
@@ -407,14 +408,15 @@ class _SettingsWidgetState extends State<SettingsWidget> {
     return Column(
       children: [
         Text(value,
-            style: TextStyle(
+            style: const TextStyle(
                 color: AppColors.textPrimary,
                 fontWeight: FontWeight.bold,
                 fontSize: 24)),
         const SizedBox(height: 6),
         Text(label,
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+            style:
+                const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
       ],
     );
   }

@@ -96,7 +96,8 @@ class _TimerTypeSelectorState extends State<TimerTypeSelector>
                             borderRadius: BorderRadius.circular(25),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.primaryRed.withOpacity(0.4),
+                                color:
+                                    AppColors.primaryRed.withValues(alpha: 0.4),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),

@@ -30,7 +30,7 @@ class TimerViewModel extends ChangeNotifier {
 
   // Callback for timer completion (to show dialog)
   Function(TimerType completedType)? onTimerComplete;
-  
+
   // Callback for notification tap (to scroll to top)
   Function()? onNotificationTap;
 
@@ -61,10 +61,10 @@ class TimerViewModel extends ChangeNotifier {
     _totalFocusSessions = await _sessionRepository.getTotalFocusTime() ~/
         (_settings!.focusDuration);
     await _notificationService.initialize();
-    
+
     // Listen to notification actions
-    _notificationSubscription = _notificationService.actionStream.listen((action) {
-      print('Received notification action: $action');
+    _notificationSubscription =
+        _notificationService.actionStream.listen((action) {
       switch (action) {
         case NotificationAction.pause:
           pause();
@@ -80,7 +80,7 @@ class TimerViewModel extends ChangeNotifier {
           break;
       }
     });
-    
+
     notifyListeners();
   }
 
@@ -94,7 +94,6 @@ class TimerViewModel extends ChangeNotifier {
   }
 
   void start() {
-    print('TimerViewModel.start() called');
     if (_isRunning) return;
 
     // If remaining time is zero (timer already completed), reset before starting
@@ -128,7 +127,6 @@ class TimerViewModel extends ChangeNotifier {
   }
 
   void pause() {
-    print('TimerViewModel.pause() called');
     _isRunning = false;
     _timer?.cancel();
     _notificationService.cancelTimerNotification();
@@ -136,7 +134,6 @@ class TimerViewModel extends ChangeNotifier {
   }
 
   void stop() {
-    print('TimerViewModel.stop() called');
     _isRunning = false;
     _timer?.cancel();
     _remainingSeconds = _getTotalSeconds();
@@ -145,8 +142,6 @@ class TimerViewModel extends ChangeNotifier {
   }
 
   void reset() {
-    print('TimerViewModel.reset() called');
-    // Only reset the timer, not the cycle progress
     stop();
   }
 
@@ -178,16 +173,10 @@ class TimerViewModel extends ChangeNotifier {
     _timer?.cancel();
     _isRunning = false;
 
-    // Cancel ongoing timer notification
-    await _notificationService.cancelTimerNotification();
-
-    // Play completion sound
-    await _audioService.playCompletionSound();
-
     // Store the completed timer type BEFORE switching
     final completedType = _currentTimerType;
 
-    // Show completion notification
+    // Compute notification text BEFORE state changes
     String completionTitle = '';
     String completionBody = '';
     switch (completedType) {
@@ -209,27 +198,8 @@ class TimerViewModel extends ChangeNotifier {
         completionBody = 'Ready for another cycle!';
         break;
     }
-    await _notificationService.showCompletionNotification(
-      title: completionTitle,
-      body: completionBody,
-    );
 
-    // Trigger callback for showing alert dialog with the completed type
-    onTimerComplete?.call(completedType);
-
-    // Save session
-    final session = TimerSession(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      type: _currentTimerType,
-      durationMinutes: _getTotalSeconds() ~/ 60,
-      startTime: DateTime.now().subtract(Duration(seconds: _getTotalSeconds())),
-      endTime: DateTime.now(),
-      completed: true,
-      taskId: _currentTaskId,
-    );
-    await _sessionRepository.addSession(session);
-
-    // Only switch timer type if auto-switch is enabled
+    // --- Synchronous state updates ---
     if (_settings?.autoSwitch ?? false) {
       if (_currentTimerType == TimerType.focus) {
         _currentCycle++;
@@ -247,9 +217,28 @@ class TimerViewModel extends ChangeNotifier {
       }
     }
 
-    // Reset remaining seconds for the current/new timer type
     _remainingSeconds = _getTotalSeconds();
+    onTimerComplete?.call(completedType);
     notifyListeners();
+
+    // --- Async side effects (notifications, audio, persistence) ---
+    await _notificationService.cancelTimerNotification();
+    await _audioService.playCompletionSound();
+    await _notificationService.showCompletionNotification(
+      title: completionTitle,
+      body: completionBody,
+    );
+
+    final session = TimerSession(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      type: completedType,
+      durationMinutes: _getTotalSeconds() ~/ 60,
+      startTime: DateTime.now().subtract(Duration(seconds: _getTotalSeconds())),
+      endTime: DateTime.now(),
+      completed: true,
+      taskId: _currentTaskId,
+    );
+    await _sessionRepository.addSession(session);
   }
 
   int _getTotalSeconds() {

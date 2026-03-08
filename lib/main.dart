@@ -82,7 +82,6 @@ class ZenFlowApp extends StatelessWidget {
     required this.timerVm,
     required this.taskVm,
     required this.settingsVm,
-    super.key,
   });
 
   /// Construct a preloaded app with initialized viewmodels.

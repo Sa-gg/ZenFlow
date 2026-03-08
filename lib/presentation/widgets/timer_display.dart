@@ -12,7 +12,7 @@ class TimerDisplay extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<TimerViewModel>(
       builder: (context, viewModel, child) {
-        return Container(
+        return SizedBox(
           width: double.infinity,
           height: 380,
           child: Stack(
@@ -39,7 +39,7 @@ class TimerDisplay extends StatelessWidget {
                   color: AppColors.cardBackground,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
+                      color: Colors.black.withValues(alpha: 0.3),
                       blurRadius: 20,
                       spreadRadius: 5,
                     ),
@@ -50,7 +50,7 @@ class TimerDisplay extends StatelessWidget {
                   children: [
                     Text(
                       viewModel.timeDisplay,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 64,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
